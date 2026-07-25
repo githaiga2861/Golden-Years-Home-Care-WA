@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://goldenyearshomecarewa.com/sitemap.xml
