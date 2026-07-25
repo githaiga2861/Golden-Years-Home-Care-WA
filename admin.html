@@ -85,8 +85,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL='https://uldywugntkykeftuzxys.supabase.co';
-const SUPABASE_KEY='sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7';
+const SUPABASE_URL='https://styzbftuzuqcnkwvwpgm.supabase.co';
+const SUPABASE_KEY='sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function toast(m){var t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);}
@@ -126,7 +126,7 @@ async function loadLeads(){
 }
 async function delLead(id){if(!confirm('Delete this lead?'))return;try{var r=await sb.from('homecare_leads').delete().eq('id',id);if(r.error)throw r.error;toast('Lead deleted.');loadLeads();}catch(e){toast('Delete failed.');}}
 </script>
-<footer class="footer"><div class="wrap"><div class="footer__grid">
+<footer class="footer" style="padding-bottom:74px"><div class="wrap"><div class="footer__grid">
   <div class="footer__brand"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Care WA logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold)">Home Care &bull; WA</span></span></a><p class="footer__tag">"Real help, at home, from people who care."</p><p style="font-size:.9rem">Compassionate non-medical home care for seniors and families across Western Washington — a sister service of <a href="https://goldenyearshomehealthllc.com" target="_blank" rel="noopener" style="color:var(--gold)">Golden Years Home Health Supported Living LLC</a>.</p><div class="footer__social"><a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a><a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
   <div><h4>Home Care</h4><ul class="footer__col-links"><li><a href="/services#personal-care">Personal Care</a></li><li><a href="/services#companionship">Companionship</a></li><li><a href="/services#homemaking">Homemaking &amp; Meals</a></li><li><a href="/services#respite">Respite for Families</a></li><li><a href="/services#errands">Errands &amp; Transportation</a></li><li><a href="/services">All Services</a></li></ul></div>
   <div><h4>Company</h4><ul class="footer__col-links"><li><a href="/">Home</a></li><li><a href="/why-us">Why Choose Us</a></li><li><a href="/locations">Where We Serve</a></li><li><a href="/contact">Contact Us</a></li><li><a href="https://goldenyearshomehealthllc.com" target="_blank" rel="noopener">Skilled Nursing &amp; Health Services ↗</a></li></ul></div>
@@ -193,7 +193,7 @@ async function delLead(id){if(!confirm('Delete this lead?'))return;try{var r=awa
 })();
 function openQform(){document.getElementById('qform').classList.add('open');document.body.style.overflow='hidden';}
 function closeQform(){document.getElementById('qform').classList.remove('open');document.body.style.overflow='';}
-var _hcSb=(typeof supabase!=='undefined')?supabase.createClient('https://uldywugntkykeftuzxys.supabase.co','sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7'):null;
+var _hcSb=(typeof supabase!=='undefined')?supabase.createClient('https://styzbftuzuqcnkwvwpgm.supabase.co','sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR'):null;
 function _hcSaveLead(sourcePage,name,email,phone,details,message){
   if(!_hcSb) return Promise.resolve();
   return _hcSb.from('homecare_leads').insert([{source_page:sourcePage,name:name,email:email,phone:phone,details:details,message:message||''}]).then(function(){},function(){});
