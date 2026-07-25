@@ -158,6 +158,9 @@
 })();
 function openQform(){document.getElementById('qform').classList.add('open');document.body.style.overflow='hidden';}
 function closeQform(){document.getElementById('qform').classList.remove('open');document.body.style.overflow='';}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 var _hcSb=(typeof supabase!=='undefined')?supabase.createClient('https://styzbftuzuqcnkwvwpgm.supabase.co','sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR'):null;
 function _hcSaveLead(sourcePage,name,email,phone,details,message){
   if(!_hcSb) return Promise.resolve();
