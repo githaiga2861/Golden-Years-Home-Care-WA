@@ -715,3 +715,39 @@ html,body{max-width:100%;overflow-x:hidden}
 .pub-status--draft{background:var(--mist);color:var(--teal-700)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal-900);color:#fff;padding:14px 26px;border-radius:50px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s var(--ease);z-index:9999;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ============================================================
+   TESTIMONIALS / REVIEWS SYSTEM
+   ============================================================ */
+.quotecard{position:relative;overflow:hidden}
+.quotecard.rotating{transition:opacity .6s var(--ease), transform .6s var(--ease)}
+.quotecard.rotating.fade-out{opacity:0;transform:translateY(10px)}
+.quotecard.rotating.fade-in{opacity:1;transform:translateY(0)}
+.reviews-empty{text-align:center;padding:50px 24px;background:var(--mist-2);border-radius:var(--r-lg);color:var(--slate);grid-column:1/-1}
+
+/* Leave-a-review CTA under the testimonials section */
+.review-cta{text-align:center;margin-top:36px}
+
+/* Review submission modal */
+.rvform{display:none;position:fixed;inset:0;z-index:9996;background:rgba(4,30,79,.6);overflow-y:auto;padding:40px 16px}
+.rvform.open{display:block}
+.rvform__card{max-width:560px;margin:0 auto;background:#fff;border-radius:var(--r-xl);box-shadow:var(--shadow-lg);overflow:hidden;animation:rise .4s var(--ease)}
+.rvform__head{background:linear-gradient(135deg,var(--teal-900),var(--teal-600));color:#fff;padding:26px 30px;position:relative}
+.rvform__head h3{color:#fff;margin-bottom:5px}
+.rvform__head p{color:rgba(255,255,255,.85);font-size:.92rem;margin:0}
+.rvform__close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.14);border:none;width:36px;height:36px;border-radius:10px;color:#fff;font-size:1.4rem;cursor:pointer;display:grid;place-items:center;transition:background .2s}
+.rvform__close:hover{background:rgba(255,255,255,.26)}
+.rvform__body{padding:28px 30px}
+
+/* Star rating input */
+.star-input{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.star-input button{background:none;border:none;cursor:pointer;padding:2px;line-height:0;transition:transform .15s}
+.star-input button:hover{transform:scale(1.15)}
+.star-input svg{width:32px;height:32px;color:var(--line);fill:none;stroke:var(--gold-deep);stroke-width:1.5;transition:all .15s}
+.star-input button.on svg{fill:var(--gold);stroke:var(--gold-deep)}
+.star-caption{font-size:.86rem;font-weight:600;color:var(--teal-700);min-height:20px;margin-bottom:16px}
+
+/* Reviews page grid */
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.reviews-grid .quotecard{height:auto}
+@media(max-width:640px){.reviews-grid{grid-template-columns:1fr}}

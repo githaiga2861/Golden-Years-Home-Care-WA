@@ -125,13 +125,14 @@
       <li data-nav="services"><a href="/services">Home Care Services</a></li>
       <li data-nav="why-us"><a href="/why-us">Why Choose Us</a></li>
       <li data-nav="locations"><a href="/locations">Where We Serve</a></li>
+      <li data-nav="reviews"><a href="/reviews">Reviews</a></li>
       <li data-nav="contact"><a href="/contact">Contact</a></li>
     </ul>
     <div class="nav__actions"></div>
     <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
   </nav>
 </header>
-<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><div class="mobile-menu__head"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Care WA logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Care &bull; WA</span></span></a><button class="mobile-menu__close" aria-label="Close menu" onclick="document.getElementById('mm').classList.remove('open')">×</button></div><nav class="mobile-menu__nav"><a class="mm-item" href="/">Home</a><a class="mm-item" href="/services">Home Care Services</a><a class="mm-item" href="/why-us">Why Choose Us</a><a class="mm-item" href="/locations">Where We Serve</a><a class="mm-item" href="/contact">Contact Us</a></nav><div class="mobile-menu__foot"><a class="btn btn--primary" href="/contact">Get Care Now</a><a class="mm-tel" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a></div></div></div>
+<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><div class="mobile-menu__head"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Care WA logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Care &bull; WA</span></span></a><button class="mobile-menu__close" aria-label="Close menu" onclick="document.getElementById('mm').classList.remove('open')">×</button></div><nav class="mobile-menu__nav"><a class="mm-item" href="/">Home</a><a class="mm-item" href="/services">Home Care Services</a><a class="mm-item" href="/why-us">Why Choose Us</a><a class="mm-item" href="/locations">Where We Serve</a><a class="mm-item" href="/reviews">Reviews</a><a class="mm-item" href="/contact">Contact Us</a></nav><div class="mobile-menu__foot"><a class="btn btn--primary" href="/contact">Get Care Now</a><a class="mm-tel" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a></div></div></div>
 <main id="main" style="padding-top:0">
 <!-- HERO -->
 <section class="hero">
@@ -201,6 +202,70 @@
       <div class="jstep"><span class="jtag">Thriving at Home</span><div class="jstep__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/><circle cx="12" cy="12" r="4"/></svg></div><h3>She's home. She's safe. She's herself.</h3><p>Living on her own terms, in the place she loves — with just the right amount of help. That's what we do, every single day.</p></div>
     </div>
     <div class="center" style="margin-top:48px"><button class="btn btn--gold" onclick="openQform()">Start Your Family's Journey <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+  </div>
+<!-- TESTIMONIALS -->
+<section class="section section--mist">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:46px">
+      <span class="eyebrow">In Their Words</span>
+      <h2>Stories from the Families We Serve</h2>
+      <hr class="gold-rule center">
+    </div>
+    <div class="grid grid--3" id="testimonialGrid">
+      <div class="quotecard"></div>
+      <div class="quotecard"></div>
+      <div class="quotecard"></div>
+    </div>
+        <div class="review-cta"><button class="btn btn--gold" onclick="openReviewForm()">Share Your Experience <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button></div>
+
+<!-- LEAVE A REVIEW MODAL -->
+<div class="rvform" id="reviewModal">
+  <div class="rvform__card">
+    <div class="rvform__head">
+      <button class="rvform__close" onclick="closeReviewForm()" aria-label="Close">×</button>
+      <h3>Share Your Experience</h3>
+      <p>Your review helps other families feel confident reaching out. Approved reviews appear on our site within a few days.</p>
+    </div>
+    <div class="rvform__body">
+      <form id="reviewForm" onsubmit="return submitReview(event);">
+        <div class="field"><label for="rv-name">Your Name *</label><input id="rv-name" type="text" required></div>
+        <div class="field"><label for="rv-relationship">Who Are You Reviewing As? *</label>
+          <select id="rv-relationship" required>
+            <option value="">Please select…</option>
+            <option>Client</option>
+            <option>Daughter of a Client</option>
+            <option>Son of a Client</option>
+            <option>Spouse of a Client</option>
+            <option>Family Caregiver</option>
+            <option>Other Family Member</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Your Rating *</label>
+          <div class="star-input" id="starInput">
+            <input type="hidden" id="rv-rating" value="0">
+            <button type="button" onclick="setStarRating(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button>
+            <button type="button" onclick="setStarRating(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button>
+            <button type="button" onclick="setStarRating(3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button>
+            <button type="button" onclick="setStarRating(4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button>
+            <button type="button" onclick="setStarRating(5)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg></button>
+          </div>
+          <div class="star-caption" id="starCaption"></div>
+        </div>
+        <div class="field"><label for="rv-text">Your Review *</label><textarea id="rv-text" required placeholder="Tell us about your experience with Golden Years…"></textarea></div>
+        <p class="err" id="rvErr" style="display:none;color:#c0392b;font-size:.86rem;margin-bottom:14px">Please fill in your name, a rating, and your review.</p>
+        <button class="btn btn--primary" type="submit" id="rvSubmitBtn" style="width:100%;justify-content:center">Submit My Review</button>
+        <p style="font-size:.78rem;color:var(--slate-2);margin:14px 0 0;text-align:center">Reviews are checked before appearing publicly.</p>
+      </form>
+      <div id="rvThanks" style="display:none;text-align:center;padding:14px 0">
+        <div class="thankmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+        <h3>Thank You!</h3>
+        <p>Your review has been received and is awaiting a quick check before it goes live. We appreciate you sharing your experience.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 </section>
 
@@ -326,4 +391,150 @@ function submitQuick(e){
 }
 </script>
 
+<script>
+/* ============================================================
+   TESTIMONIALS SYSTEM — homepage rotation + submission
+   https://styzbftuzuqcnkwvwpgm.supabase.co / sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR get replaced per-site
+   ============================================================ */
+(function(){
+  var _tSb = (typeof supabase!=='undefined') ? supabase.createClient('https://styzbftuzuqcnkwvwpgm.supabase.co','sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR') : null;
+  var _approved = [];
+  var _rotationPointer = 0;
+  var STAR_CAPTIONS = {1:'Poor',2:'Fair',3:'Good',4:'Very Good',5:'Excellent!'};
+  var STAR_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg>';
+
+  function escT(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function starsHTML(n){
+    var out='<div class="stars">';
+    for(var i=0;i<5;i++){
+      out += '<svg viewBox="0 0 24 24" fill="'+(i<n?'currentColor':'none')+'" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6Z"/></svg>';
+    }
+    return out+'</div>';
+  }
+
+  function cardInnerHTML(t){
+    return '<span class="qmark">&rdquo;</span>'+
+      starsHTML(t.rating)+
+      '<blockquote>"'+escT(t.review_text)+'"</blockquote>'+
+      '<cite><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0Z"/></svg></span><span>'+escT(t.reviewer_name)+'<small>'+escT(t.relationship||'')+'</small></span></cite>';
+  }
+
+  function nextUnique(count){
+    // returns `count` distinct testimonials starting at the rotation pointer, wrapping around
+    if(!_approved.length) return [];
+    var picked = [];
+    var idx = _rotationPointer;
+    for(var i=0;i<count && i<_approved.length;i++){
+      picked.push(_approved[idx % _approved.length]);
+      idx++;
+    }
+    return picked;
+  }
+
+  function renderInitialCards(){
+    var cards = document.querySelectorAll('#testimonialGrid .quotecard');
+    if(!cards.length) return;
+    var initial = nextUnique(cards.length);
+    if(!initial.length){
+      var grid = document.getElementById('testimonialGrid');
+      if(grid) grid.innerHTML = '<div class="reviews-empty">Be the first to share your experience with Golden Years.</div>';
+      return;
+    }
+    cards.forEach(function(card, i){
+      if(initial[i]){ card.innerHTML = cardInnerHTML(initial[i]); card.classList.add('rotating'); }
+      else { card.style.display='none'; }
+    });
+    _rotationPointer = initial.length % _approved.length;
+  }
+
+  function rotateOneCard(cardEl){
+    if(_approved.length <= document.querySelectorAll('#testimonialGrid .quotecard').length) return; // nothing extra to rotate in
+    var next = _approved[_rotationPointer % _approved.length];
+    _rotationPointer++;
+    cardEl.classList.add('fade-out');
+    setTimeout(function(){
+      cardEl.innerHTML = cardInnerHTML(next);
+      cardEl.classList.remove('fade-out');
+      cardEl.classList.add('fade-in');
+      setTimeout(function(){ cardEl.classList.remove('fade-in'); }, 600);
+    }, 600);
+  }
+
+  function startRotation(){
+    var cards = document.querySelectorAll('#testimonialGrid .quotecard');
+    if(cards.length < 2) { setInterval(function(){ if(cards[0]) rotateOneCard(cards[0]); }, 15000); return; }
+    cards.forEach(function(card, i){
+      setTimeout(function(){
+        setInterval(function(){ rotateOneCard(card); }, 15000);
+      }, i * 5000); // stagger each card's cycle by 5s so they don't all flip at once
+    });
+  }
+
+  async function loadTestimonials(){
+    if(!_tSb) return;
+    try{
+      var r = await _tSb.from('testimonials').select('*').eq('published',true).order('created_at',{ascending:false});
+      if(r.error) throw r.error;
+      _approved = r.data || [];
+      renderInitialCards();
+      if(_approved.length > document.querySelectorAll('#testimonialGrid .quotecard').length){
+        startRotation();
+      }
+    }catch(e){}
+  }
+
+  /* ---- Star rating input ---- */
+  window.setStarRating = function(n){
+    document.getElementById('rv-rating').value = n;
+    document.querySelectorAll('#starInput button').forEach(function(b,i){
+      b.classList.toggle('on', i < n);
+    });
+    document.getElementById('starCaption').textContent = STAR_CAPTIONS[n] || '';
+  };
+
+  /* ---- Modal open/close ---- */
+  window.openReviewForm = function(){
+    document.getElementById('reviewModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeReviewForm = function(){
+    document.getElementById('reviewModal').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  /* ---- Submission ---- */
+  window.submitReview = async function(e){
+    e.preventDefault();
+    var name = document.getElementById('rv-name').value.trim();
+    var rel = document.getElementById('rv-relationship').value;
+    var text = document.getElementById('rv-text').value.trim();
+    var rating = parseInt(document.getElementById('rv-rating').value || '0', 10);
+    var btn = document.getElementById('rvSubmitBtn');
+    if(!name || !text || !rating){ 
+      var err = document.getElementById('rvErr'); if(err) err.style.display='block';
+      return false;
+    }
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    try{
+      var r = await _tSb.from('testimonials').insert([{reviewer_name:name, relationship:rel, review_text:text, rating:rating}]);
+      if(r.error) throw r.error;
+      document.getElementById('reviewForm').style.display='none';
+      document.getElementById('rvThanks').style.display='block';
+    }catch(e){
+      alert('Something went wrong submitting your review — please try again.');
+      btn.disabled = false; btn.textContent = 'Submit My Review';
+    }
+    return false;
+  };
+
+  document.addEventListener('click', function(e){
+    var m = document.getElementById('reviewModal');
+    if(m && e.target === m) closeReviewForm();
+  });
+
+  document.addEventListener('DOMContentLoaded', loadTestimonials);
+})();
+
+</script>
 </body></html>
