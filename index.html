@@ -305,9 +305,28 @@
 
 <!-- Sticky quick bar + quick form -->
 <div class="quickbar" id="quickbar"><div class="quickbar__inner">
+  <button class="chat-trigger" onclick="toggleChatPanel()" aria-label="Open chat"><span class="chat-badge">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.7 8.7 0 0 1-3.8-.9L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6Z"/></svg></button>
   <span class="quickbar__txt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Caring help at home — usually arranged within days.</span>
   <span class="quickbar__cta"><button class="btn btn--gold" onclick="openQform()">Get Care Now</button><a class="btn btn--white-outline" href="tel:+12067171234">Call (206) 717-1234</a></span>
 </div></div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel__head">
+    <img src="/images/logo.png" alt="Golden Years Home Care WA logo">
+    <div><strong>Golden Years Home Care WA</strong><span>Typically replies within a day</span></div>
+    <button class="chat-panel__close" onclick="closeChatPanel()" aria-label="Close chat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="chat-panel__body">
+    <div class="chat-msg">
+      <img src="/images/logo.png" alt="">
+      <div class="chat-msg__bubble"><strong>Golden Years Home Care WA</strong><br>Hi there! 👋 Our live chat is being built right now and is coming very soon. In the meantime, tap "Get Care Now" below or give us a call — a real person is always happy to help.</div>
+    </div>
+    <div class="chat-typing"><span></span><span></span><span></span></div>
+  </div>
+  <div class="chat-panel__foot">
+    <input type="text" placeholder="Live chat coming soon…" disabled>
+  </div>
+</div>
+
 <div class="qform" id="qform"><div class="qform__card">
   <div class="qform__head"><button class="qform__close" onclick="closeQform()" aria-label="Close">×</button><h3>Tell us what you need</h3><p>60 seconds — a member of our care team will reach out the same business day.</p></div>
   <div class="qform__body">
@@ -537,4 +556,22 @@ function submitQuick(e){
 })();
 
 </script>
+<script>
+window.toggleChatPanel = function(){
+  var p = document.getElementById('chatPanel');
+  if(p) p.classList.toggle('open');
+};
+window.closeChatPanel = function(){
+  var p = document.getElementById('chatPanel');
+  if(p) p.classList.remove('open');
+};
+document.addEventListener('click', function(e){
+  var panel = document.getElementById('chatPanel');
+  var trigger = e.target.closest('.chat-trigger');
+  if(panel && panel.classList.contains('open') && !panel.contains(e.target) && !trigger){
+    panel.classList.remove('open');
+  }
+});
+</script>
+
 </body></html>
