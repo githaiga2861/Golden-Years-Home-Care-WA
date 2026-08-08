@@ -650,7 +650,7 @@ html,body{max-width:100%;overflow-x:hidden}
 /* ---- Sticky "Get Care Now" bar + quick form ---- */
 .quickbar{position:fixed;bottom:0;left:0;right:0;z-index:260;background:linear-gradient(135deg,var(--teal-700),var(--teal));color:#fff;box-shadow:0 -10px 34px rgba(4,30,79,.25);transform:translateY(110%);transition:transform .45s var(--ease)}
 .quickbar.show{transform:none}
-.quickbar__inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 24px;flex-wrap:wrap}
+.quickbar__inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px;flex-wrap:wrap}
 .quickbar__txt{font-weight:600;font-size:.98rem;display:flex;align-items:center;gap:10px}
 .quickbar__txt svg{width:20px;height:20px;color:var(--gold);animation:phoneRing 2.4s var(--ease) infinite}
 .quickbar__cta{display:flex;gap:10px;flex-wrap:wrap}
@@ -695,7 +695,14 @@ html,body{max-width:100%;overflow-x:hidden}
   .compare{grid-template-columns:1fr}
   .journey{padding-left:30px}
   .jstep{padding-left:26px}
-  .quickbar__inner{justify-content:center;text-align:center}
+  .quickbar__inner{flex-wrap:nowrap;justify-content:space-between;align-items:center;padding:8px 12px;gap:8px;overflow-x:auto}
+  .quickbar__txt{font-size:0;gap:0;flex-shrink:0}
+  .quickbar__txt svg{width:20px;height:20px}
+  .quickbar__cta{gap:6px;flex-wrap:nowrap;flex-shrink:0}
+  .quickbar .btn{padding:7px 12px;font-size:.72rem;white-space:nowrap}
+  .chat-trigger{width:34px;height:34px;flex-shrink:0}
+  .chat-trigger svg{width:17px;height:17px}
+  .chat-badge{width:15px;height:15px;font-size:.6rem;top:-3px;right:-3px}
 }
 
 /* ---- Admin dashboard components (Home Care WA) ---- */
