@@ -792,3 +792,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-panel__foot{padding:12px 14px;border-top:1px solid var(--line-2);background:#fff}
 .chat-panel__foot input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:50px;font-family:inherit;font-size:.86rem;background:var(--mist-2);color:var(--slate-2)}
 @media(max-width:480px){.chat-panel{left:12px;right:12px;width:auto;bottom:82px}}
+
+/* Comparison list: downside items get an X in a muted amber tone, NOT a checkmark */
+.checks--con li::before{
+  background:#faf1e0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a7842f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
+}
