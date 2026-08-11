@@ -798,3 +798,9 @@ html,body{max-width:100%;overflow-x:hidden}
   background-color:#faf1e0;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a7842f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
 }
+
+/* Chat send button + input row (real working chat) */
+.chat-panel__foot input{flex:1}
+.chat-send{background:var(--teal);border:none;width:40px;height:40px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .2s}
+.chat-send:hover{background:var(--teal-700)}
+.chat-panel__body{max-height:340px;overflow-y:auto}

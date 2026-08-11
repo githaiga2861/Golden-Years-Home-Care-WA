@@ -1,0 +1,6 @@
+
+/* Chat send button + input row (real working chat) */
+.chat-panel__foot input{flex:1}
+.chat-send{background:var(--teal);border:none;width:40px;height:40px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .2s}
+.chat-send:hover{background:var(--teal-700)}
+.chat-panel__body{max-height:340px;overflow-y:auto}
