@@ -245,7 +245,9 @@ document.addEventListener('click', function(e){
     var body = document.getElementById('chatBody');
     var div = document.createElement('div');
     div.className = 'chat-msg';
-    div.innerHTML = '<img src="/images/logo.png" alt=""><div class="chat-msg__bubble">'+escChat(text).replace(/\n/g,'<br>')+'</div>';
+    var safe = escChat(text).replace(/\n/g,'<br>');
+    safe = safe.replace(/\(206\) 717-1234/g, '<a href="tel:+12067171234" style="color:inherit;text-decoration:underline">(206) 717-1234</a>');
+    div.innerHTML = '<img src="/images/logo.png" alt=""><div class="chat-msg__bubble">'+safe+'</div>';
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
   }
