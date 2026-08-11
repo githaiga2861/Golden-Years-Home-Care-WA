@@ -249,16 +249,42 @@ document.addEventListener('click', function(e){
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
   }
+  function formatBotMessage(text){
+    var safe = escChat(text);
+    safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="chat-bold">$1</strong>');
+    safe = safe.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, function(m){
+      return '<a href="mailto:'+m+'" class="chat-link">'+m+'</a>';
+    });
+    safe = safe.replace(/\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g, function(m){
+      var digits = m.replace(/\D/g,'');
+      if(digits.length !== 10) return m;
+      return '<a href="tel:+1'+digits+'" class="chat-link">'+m+'</a>';
+    });
+    safe = safe.replace(/(https?:\/\/[^\s<]+)/g, function(m){
+      return '<a href="#" class="chat-link chat-ext-link" data-href="'+m+'">'+m+'</a>';
+    });
+    safe = safe.replace(/\n/g,'<br>');
+    return safe;
+  }
   function appendBotMsg(text){
     var body = document.getElementById('chatBody');
     var div = document.createElement('div');
     div.className = 'chat-msg';
-    var safe = escChat(text).replace(/\n/g,'<br>');
-    safe = safe.replace(/\(206\) 717-1234/g, '<a href="tel:+12067171234" style="color:inherit;text-decoration:underline">(206) 717-1234</a>');
+    var safe = formatBotMessage(text);
     div.innerHTML = '<img src="/images/logo.png" alt=""><div class="chat-msg__bubble">'+safe+'</div>';
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
   }
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('.chat-ext-link');
+    if(link){
+      e.preventDefault();
+      var url = link.getAttribute('data-href');
+      if(confirm('This link will take you to another page:\n'+url+'\n\nContinue?')){
+        window.open(url, '_blank', 'noopener');
+      }
+    }
+  });
   function showTyping(){
     var body = document.getElementById('chatBody');
     var div = document.createElement('div');

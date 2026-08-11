@@ -1,0 +1,8 @@
+
+/* Fix: chatbot bubble wrapping (no horizontal scroll) + link styling */
+.chat-panel__body{overflow-x:hidden}
+.chat-msg{max-width:100%}
+.chat-msg__bubble{max-width:78%;overflow-wrap:break-word;word-break:break-word}
+.chat-bold{color:var(--teal-700)}
+.chat-link{color:var(--teal);text-decoration:underline;word-break:break-all}
+.chat-link:hover{color:var(--teal-700)}

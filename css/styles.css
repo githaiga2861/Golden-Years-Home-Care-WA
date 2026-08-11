@@ -813,3 +813,11 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-hint::after{content:"";position:absolute;left:18px;bottom:-8px;width:16px;height:16px;background:#fff;border-right:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(45deg)}
 .chat-hint__close{position:absolute;top:-8px;right:-8px;background:var(--teal-900);border:none;width:22px;height:22px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;font-size:.7rem;line-height:1}
 @media(max-width:600px){.chat-hint{left:8px;bottom:64px;max-width:170px;font-size:.78rem;padding:10px 14px}}
+
+/* Fix: chatbot bubble wrapping (no horizontal scroll) + link styling */
+.chat-panel__body{overflow-x:hidden}
+.chat-msg{max-width:100%}
+.chat-msg__bubble{max-width:78%;overflow-wrap:break-word;word-break:break-word}
+.chat-bold{color:var(--teal-700)}
+.chat-link{color:var(--teal);text-decoration:underline;word-break:break-all}
+.chat-link:hover{color:var(--teal-700)}
