@@ -1,0 +1,29 @@
+<script>
+(function(){
+  function shouldShowHint(){
+    try{ return !sessionStorage.getItem('gy_chat_hint_seen'); }catch(e){ return true; }
+  }
+  window.dismissChatHint = function(){
+    var el = document.getElementById('chatHint');
+    if(el) el.classList.remove('show');
+    try{ sessionStorage.setItem('gy_chat_hint_seen','1'); }catch(e){}
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    if(!shouldShowHint()) return;
+    setTimeout(function(){
+      // Don't show if the chat panel is already open, or the quickbar isn't visible yet
+      var panel = document.getElementById('chatPanel');
+      if(panel && panel.classList.contains('open')) return;
+      var el = document.getElementById('chatHint');
+      if(el) el.classList.add('show');
+      // Auto-dismiss on its own after 9 seconds if the visitor ignores it
+      setTimeout(function(){ window.dismissChatHint(); }, 9000);
+    }, 4000);
+  });
+  // If they open the chat, hide the hint immediately and remember it was seen
+  var origToggle = window.toggleChatPanel;
+  document.addEventListener('click', function(e){
+    if(e.target.closest('.chat-trigger')){ window.dismissChatHint(); }
+  });
+})();
+</script>

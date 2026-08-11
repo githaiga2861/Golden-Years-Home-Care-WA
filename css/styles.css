@@ -804,3 +804,12 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-send{background:var(--teal);border:none;width:40px;height:40px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .2s}
 .chat-send:hover{background:var(--teal-700)}
 .chat-panel__body{max-height:340px;overflow-y:auto}
+
+/* ============================================================
+   CHAT HINT TOOLTIP — points at the chat trigger, auto-dismisses
+   ============================================================ */
+.chat-hint{position:fixed;left:56px;bottom:96px;z-index:9995;background:#fff;color:var(--ink);padding:12px 16px;border-radius:14px;box-shadow:var(--shadow-lg);max-width:220px;font-size:.85rem;font-weight:600;line-height:1.4;opacity:0;transform:translateY(10px) scale(.9);transform-origin:bottom left;transition:all .4s var(--ease);pointer-events:none;border:1.5px solid var(--gold)}
+.chat-hint.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.chat-hint::after{content:"";position:absolute;left:18px;bottom:-8px;width:16px;height:16px;background:#fff;border-right:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(45deg)}
+.chat-hint__close{position:absolute;top:-8px;right:-8px;background:var(--teal-900);border:none;width:22px;height:22px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;font-size:.7rem;line-height:1}
+@media(max-width:600px){.chat-hint{left:8px;bottom:64px;max-width:170px;font-size:.78rem;padding:10px 14px}}

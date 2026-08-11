@@ -110,6 +110,10 @@
   <span class="quickbar__txt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Caring help at home — usually arranged within days.</span>
   <span class="quickbar__cta"><button class="btn btn--gold" onclick="openQform()">Get Care Now</button><a class="btn btn--white-outline" href="tel:+12067171234">Call (206) 717-1234</a></span>
 </div></div>
+<div class="chat-hint" id="chatHint">
+  <button class="chat-hint__close" onclick="dismissChatHint()" aria-label="Dismiss">×</button>
+  💬 Have a question? Just tap here to chat — quick answers, anytime!
+</div>
 <div class="chat-panel" id="chatPanel">
   <div class="chat-panel__head">
     <img src="/images/logo.png" alt="Golden Years Home Care WA logo">
@@ -307,6 +311,36 @@ document.addEventListener('click', function(e){
       });
     return false;
   };
+})();
+</script>
+
+<script>
+(function(){
+  function shouldShowHint(){
+    try{ return !sessionStorage.getItem('gy_chat_hint_seen'); }catch(e){ return true; }
+  }
+  window.dismissChatHint = function(){
+    var el = document.getElementById('chatHint');
+    if(el) el.classList.remove('show');
+    try{ sessionStorage.setItem('gy_chat_hint_seen','1'); }catch(e){}
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    if(!shouldShowHint()) return;
+    setTimeout(function(){
+      // Don't show if the chat panel is already open, or the quickbar isn't visible yet
+      var panel = document.getElementById('chatPanel');
+      if(panel && panel.classList.contains('open')) return;
+      var el = document.getElementById('chatHint');
+      if(el) el.classList.add('show');
+      // Auto-dismiss on its own after 9 seconds if the visitor ignores it
+      setTimeout(function(){ window.dismissChatHint(); }, 9000);
+    }, 4000);
+  });
+  // If they open the chat, hide the hint immediately and remember it was seen
+  var origToggle = window.toggleChatPanel;
+  document.addEventListener('click', function(e){
+    if(e.target.closest('.chat-trigger')){ window.dismissChatHint(); }
+  });
 })();
 </script>
 
