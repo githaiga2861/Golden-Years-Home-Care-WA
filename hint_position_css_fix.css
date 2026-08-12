@@ -1,0 +1,6 @@
+
+/* Chat hint now positioned dynamically via JS (works correctly on both
+   mobile and desktop, wherever the chat icon actually is) — these rules
+   just override the old fixed left/bottom so JS fully controls position. */
+.chat-hint{left:auto;bottom:auto}
+@media(max-width:600px){.chat-hint{left:auto;bottom:auto}}

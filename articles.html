@@ -412,6 +412,24 @@ document.addEventListener('click', function(e){
 
 <script>
 (function(){
+  var _hintShownThisSession = false;
+  function positionHintAboveTrigger(){
+    var trigger = document.querySelector('.chat-trigger');
+    var hint = document.getElementById('chatHint');
+    if(!trigger || !hint) return false;
+    var rect = trigger.getBoundingClientRect();
+    if(rect.width === 0 && rect.height === 0) return false;
+    var hintWidth = hint.offsetWidth || 220;
+    var left = rect.left;
+    var maxLeft = window.innerWidth - hintWidth - 12;
+    if(left > maxLeft) left = maxLeft;
+    if(left < 8) left = 8;
+    var bottom = window.innerHeight - rect.top + 12;
+    hint.style.left = left + 'px';
+    hint.style.bottom = bottom + 'px';
+    hint.style.top = 'auto';
+    return true;
+  }
   function shouldShowHint(){
     try{ return !sessionStorage.getItem('gy_chat_hint_seen'); }catch(e){ return true; }
   }
@@ -420,20 +438,20 @@ document.addEventListener('click', function(e){
     if(el) el.classList.remove('show');
     try{ sessionStorage.setItem('gy_chat_hint_seen','1'); }catch(e){}
   };
-  document.addEventListener('DOMContentLoaded', function(){
-    if(!shouldShowHint()) return;
-    setTimeout(function(){
-      // Don't show if the chat panel is already open, or the quickbar isn't visible yet
-      var panel = document.getElementById('chatPanel');
-      if(panel && panel.classList.contains('open')) return;
-      var el = document.getElementById('chatHint');
-      if(el) el.classList.add('show');
-      // Auto-dismiss on its own after 9 seconds if the visitor ignores it
-      setTimeout(function(){ window.dismissChatHint(); }, 9000);
-    }, 4000);
+  window.tryShowChatHint = function(){
+    if(_hintShownThisSession || !shouldShowHint()) return;
+    var panel = document.getElementById('chatPanel');
+    if(panel && panel.classList.contains('open')) return;
+    if(!positionHintAboveTrigger()) return;
+    _hintShownThisSession = true;
+    var el = document.getElementById('chatHint');
+    if(el) el.classList.add('show');
+    setTimeout(function(){ window.dismissChatHint(); }, 9000);
+  };
+  window.addEventListener('resize', function(){
+    var hint = document.getElementById('chatHint');
+    if(hint && hint.classList.contains('show')) positionHintAboveTrigger();
   });
-  // If they open the chat, hide the hint immediately and remember it was seen
-  var origToggle = window.toggleChatPanel;
   document.addEventListener('click', function(e){
     if(e.target.closest('.chat-trigger')){ window.dismissChatHint(); }
   });
