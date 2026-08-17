@@ -328,8 +328,51 @@ document.addEventListener('click', function(e){
 (function(){
   var CHAT_ENDPOINT = 'https://golden-years-websites-admin.vercel.app/api/chat';
   var CHAT_SITE = 'hcwa';
-  var chatHistory = [];
   var chatBusy = false;
+
+  /* ---- Session persistence -------------------------------------------
+     History survives page-to-page navigation, but is cleared on a refresh
+     (the Navigation Timing API tells us which one happened). ---------- */
+  var HIST_KEY = 'gy_chat_history';
+  var UNREAD_KEY = 'gy_chat_unread';
+
+  function wasReload(){
+    try {
+      var nav = performance.getEntriesByType('navigation')[0];
+      return !!nav && nav.type === 'reload';
+    } catch(e){ return false; }
+  }
+  if (wasReload()){
+    try { sessionStorage.removeItem(HIST_KEY); sessionStorage.removeItem(UNREAD_KEY); } catch(e){}
+  }
+
+  var chatHistory = [];
+  try {
+    var _saved = sessionStorage.getItem(HIST_KEY);
+    if (_saved) chatHistory = JSON.parse(_saved) || [];
+  } catch(e){ chatHistory = []; }
+
+  function saveHistory(){
+    try { sessionStorage.setItem(HIST_KEY, JSON.stringify(chatHistory.slice(-20))); } catch(e){}
+  }
+
+  /* ---- Unread badge --------------------------------------------------
+     Starts at 1 for the greeting. Clears the moment the panel is opened,
+     and stays cleared across pages for the rest of the session. ------- */
+  function getUnread(){
+    try {
+      var v = sessionStorage.getItem(UNREAD_KEY);
+      return v === null ? 1 : (parseInt(v, 10) || 0);
+    } catch(e){ return 1; }
+  }
+  function setUnread(n){
+    try { sessionStorage.setItem(UNREAD_KEY, String(n)); } catch(e){}
+    var badge = document.querySelector('.chat-badge');
+    if (!badge) return;
+    if (n > 0){ badge.textContent = n; badge.style.display = ''; }
+    else { badge.style.display = 'none'; }
+  }
+  window.__gyClearUnread = function(){ setUnread(0); };
 
   function escChat(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
@@ -401,6 +444,7 @@ document.addEventListener('click', function(e){
     input.value = '';
     appendUserMsg(text);
     chatHistory.push({role:'user', content:text});
+    saveHistory();
     chatBusy = true;
     showTyping();
 
@@ -414,6 +458,9 @@ document.addEventListener('click', function(e){
         if(res.ok && res.data.reply){
           appendBotMsg(res.data.reply);
           chatHistory.push({role:'assistant', content:res.data.reply});
+          saveHistory();
+          var _panel = document.getElementById('chatPanel');
+          if (!_panel || !_panel.classList.contains('open')) setUnread(getUnread() + 1);
         } else {
           appendBotMsg(res.data.error || "Sorry, something went wrong. Please call (206) 717-1234.");
         }
@@ -426,6 +473,23 @@ document.addEventListener('click', function(e){
       });
     return false;
   };
+
+  /* ---- Restore prior conversation + badge on every page load -------- */
+  document.addEventListener('DOMContentLoaded', function(){
+    setUnread(getUnread());
+    if (!chatHistory.length) return;
+    var body = document.getElementById('chatBody');
+    if (!body) return;
+    chatHistory.forEach(function(m){
+      if (m.role === 'user') appendUserMsg(m.content);
+      else appendBotMsg(m.content);
+    });
+  });
+
+  /* Opening the chat marks everything as read */
+  document.addEventListener('click', function(e){
+    if (e.target.closest('.chat-trigger')) setUnread(0);
+  });
 })();
 </script>
 
