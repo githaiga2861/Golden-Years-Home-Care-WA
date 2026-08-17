@@ -111,7 +111,7 @@
   <div class="chat-panel__head">
     <img src="/images/logo.png" alt="Golden Years Home Care WA logo">
     <div><strong>Golden Years Home Care WA</strong><span>Ask us anything</span></div>
-    <button class="chat-hist-btn" onclick="showChatHistory()" aria-label="View past chats" title="Past chats"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button><button class="chat-panel__close" onclick="closeChatPanel()" aria-label="Close chat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <button class="chat-hist-btn" onclick="startNewChat()" aria-label="Start a new chat" title="New chat"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button><button class="chat-hist-btn" onclick="showChatHistory()" aria-label="View past chats" title="Past chats"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button><button class="chat-panel__close" onclick="closeChatPanel()" aria-label="Close chat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="chat-panel__body" id="chatBody">
     <div class="chat-msg">
@@ -379,16 +379,32 @@ document.addEventListener('click', function(e){
   };
 
   /* ---- Restore prior conversation + badge on every page load -------- */
+  var GREETING_HTML = '';
   document.addEventListener('DOMContentLoaded', function(){
-    setUnread(getUnread());
-    if (!chatHistory.length) return;
     var body = document.getElementById('chatBody');
-    if (!body) return;
+    if (body) GREETING_HTML = body.innerHTML;   // pristine greeting, before restore
+    setUnread(getUnread());
+    if (!chatHistory.length || !body) return;
     chatHistory.forEach(function(m){
       if (m.role === 'user') appendUserMsg(m.content);
       else appendBotMsg(m.content);
     });
   });
+
+  /* ---- Start a fresh conversation ----------------------------------
+     Past messages are already stored in Supabase as they happen, so the
+     old thread simply moves into "past chats" and the view resets. --- */
+  window.startNewChat = function(){
+    chatHistory = [];
+    saveHistory();
+    try { sessionStorage.removeItem('gy_session_id'); } catch(e){}
+    if (typeof getSessionId === 'function') getSessionId();  // mint a new one
+    _liveBodyHTML = null;
+    var body = document.getElementById('chatBody');
+    if (body && GREETING_HTML) { body.innerHTML = GREETING_HTML; body.scrollTop = 0; }
+    var input = document.getElementById('chatInput');
+    if (input) { input.value = ''; input.focus(); }
+  };
 
 
   /* ---- Visitor / session identity ---------------------------------- */
@@ -528,30 +544,56 @@ document.addEventListener('click', function(e){
     hint.style.top = 'auto';
     return true;
   }
-  function shouldShowHint(){
-    try{ return !sessionStorage.getItem('gy_chat_hint_seen'); }catch(e){ return true; }
+  var HINT_COUNT_KEY = 'gy_chat_hint_count';
+  var CHAT_OPENED_KEY = 'gy_chat_opened';
+
+  function chatWasOpened(){
+    try { return !!sessionStorage.getItem(CHAT_OPENED_KEY); } catch(e){ return false; }
   }
+  function getHintCount(){
+    try { return parseInt(sessionStorage.getItem(HINT_COUNT_KEY) || '0', 10) || 0; } catch(e){ return 0; }
+  }
+  function bumpHintCount(){
+    try { sessionStorage.setItem(HINT_COUNT_KEY, String(getHintCount() + 1)); } catch(e){}
+  }
+
   window.dismissChatHint = function(){
     var el = document.getElementById('chatHint');
     if(el) el.classList.remove('show');
-    try{ sessionStorage.setItem('gy_chat_hint_seen','1'); }catch(e){}
   };
+
   window.tryShowChatHint = function(){
-    if(_hintShownThisSession || !shouldShowHint()) return;
+    if(_hintShownThisSession) return;          // once per page load
+    if(chatWasOpened()) return;                // never again once chat is used
     var panel = document.getElementById('chatPanel');
     if(panel && panel.classList.contains('open')) return;
     if(!positionHintAboveTrigger()) return;
+
+    var isFirst = getHintCount() === 0;
+    var delay    = isFirst ? 0    : 2500;      // later pages wait a little longer
+    var duration = isFirst ? 9000 : 4000;      // ...and show only briefly
+
     _hintShownThisSession = true;
-    var el = document.getElementById('chatHint');
-    if(el) el.classList.add('show');
-    setTimeout(function(){ window.dismissChatHint(); }, 9000);
+    setTimeout(function(){
+      if(chatWasOpened()) return;
+      var el = document.getElementById('chatHint');
+      if(!el) return;
+      positionHintAboveTrigger();
+      el.classList.add('show');
+      bumpHintCount();
+      setTimeout(function(){ window.dismissChatHint(); }, duration);
+    }, delay);
   };
+
   window.addEventListener('resize', function(){
     var hint = document.getElementById('chatHint');
     if(hint && hint.classList.contains('show')) positionHintAboveTrigger();
   });
   document.addEventListener('click', function(e){
-    if(e.target.closest('.chat-trigger')){ window.dismissChatHint(); }
+    if(e.target.closest('.chat-trigger')){
+      try { sessionStorage.setItem(CHAT_OPENED_KEY, '1'); } catch(e){}
+      window.dismissChatHint();
+    }
   });
 })();
 </script>

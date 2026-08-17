@@ -840,3 +840,8 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-hist__date{font-size:.72rem;color:var(--slate-2);font-weight:600;margin-bottom:3px}
 .chat-hist__prev{font-size:.85rem;color:var(--ink);line-height:1.4;overflow-wrap:break-word}
 .chat-hist__empty{text-align:center;padding:28px 12px;color:var(--slate-2);font-size:.86rem}
+
+/* Three header buttons now (new chat / past chats / close) — tighten the
+   spacing slightly so the panel width stays exactly as it was. */
+.chat-panel__head{gap:10px}
+.chat-hist-btn{margin-right:2px}

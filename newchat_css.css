@@ -1,0 +1,5 @@
+
+/* Three header buttons now (new chat / past chats / close) — tighten the
+   spacing slightly so the panel width stays exactly as it was. */
+.chat-panel__head{gap:10px}
+.chat-hist-btn{margin-right:2px}
