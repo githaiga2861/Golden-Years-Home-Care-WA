@@ -128,7 +128,7 @@ async function loadOne(id){
   <div class="chat-panel__head">
     <img src="/images/logo.png" alt="Golden Years Home Care WA logo">
     <div><strong>Golden Years Home Care WA</strong><span>Ask us anything</span></div>
-    <button class="chat-panel__close" onclick="closeChatPanel()" aria-label="Close chat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <button class="chat-hist-btn" onclick="showChatHistory()" aria-label="View past chats" title="Past chats"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button><button class="chat-panel__close" onclick="closeChatPanel()" aria-label="Close chat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="chat-panel__body" id="chatBody">
     <div class="chat-msg">
@@ -429,7 +429,7 @@ document.addEventListener('click', function(e){
     fetch(CHAT_ENDPOINT, {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({site: CHAT_SITE, messages: chatHistory})
+      body: JSON.stringify({site: CHAT_SITE, messages: chatHistory, visitorId: getVisitorId(), sessionId: getSessionId()})
     }).then(function(r){ return r.json().then(function(data){ return {ok:r.ok, data:data}; }); })
       .then(function(res){
         hideTyping();
@@ -463,6 +463,117 @@ document.addEventListener('click', function(e){
       else appendBotMsg(m.content);
     });
   });
+
+
+  /* ---- Visitor / session identity ---------------------------------- */
+  var VISITOR_KEY = 'gy_visitor_id';
+  var SESSION_ID_KEY = 'gy_session_id';
+  function getVisitorId(){
+    try {
+      var v = localStorage.getItem(VISITOR_KEY);
+      if(!v){ v = 'v-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,12); localStorage.setItem(VISITOR_KEY, v); }
+      return v;
+    } catch(e){ return ''; }
+  }
+  function getSessionId(){
+    try {
+      var v = sessionStorage.getItem(SESSION_ID_KEY);
+      if(!v){ v = 's-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8); sessionStorage.setItem(SESSION_ID_KEY, v); }
+      return v;
+    } catch(e){ return ''; }
+  }
+
+  /* ---- Past-conversation history ----------------------------------- */
+  var SB_URL = 'https://styzbftuzuqcnkwvwpgm.supabase.co';
+  var SB_KEY = 'sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR';
+  var _liveBodyHTML = null;
+
+  function sbHeaders(){ return { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }; }
+
+  function fmtHistDate(iso){
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · ' +
+             d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    } catch(e){ return ''; }
+  }
+
+  window.showChatHistory = function(){
+    var body = document.getElementById('chatBody');
+    if(!body) return;
+    if(_liveBodyHTML === null) _liveBodyHTML = body.innerHTML;
+    body.innerHTML = '<div class="chat-hist"><div class="chat-hist__empty">Loading your past chats…</div></div>';
+
+    var vid = getVisitorId();
+    if(!vid){ body.innerHTML = '<div class="chat-hist"><div class="chat-hist__empty">No past chats found.</div></div>'; return; }
+
+    fetch(SB_URL + '/rest/v1/chat_messages?visitor_id=eq.' + encodeURIComponent(vid) + '&order=created_at.desc&limit=300', { headers: sbHeaders() })
+      .then(function(r){ return r.json(); })
+      .then(function(rows){
+        if(!Array.isArray(rows) || !rows.length){
+          body.innerHTML = '<div class="chat-hist">' + histBar() + '<div class="chat-hist__empty">No past chats yet.</div></div>';
+          return;
+        }
+        var sessions = {};
+        rows.forEach(function(m){
+          if(!sessions[m.session_id]) sessions[m.session_id] = [];
+          sessions[m.session_id].push(m);
+        });
+        var html = '<div class="chat-hist">' + histBar();
+        Object.keys(sessions).forEach(function(sid){
+          var msgs = sessions[sid].slice().sort(function(a,b){ return new Date(a.created_at) - new Date(b.created_at); });
+          var firstUser = msgs.filter(function(m){ return m.role === 'user'; })[0];
+          var preview = firstUser ? firstUser.content : '(no messages)';
+          if(preview.length > 90) preview = preview.slice(0,90) + '…';
+          html += '<div class="chat-hist__item" onclick="openChatSession(\'' + sid + '\')">' +
+                    '<div class="chat-hist__date">' + fmtHistDate(msgs[0].created_at) + '</div>' +
+                    '<div class="chat-hist__prev">' + escChat(preview) + '</div>' +
+                  '</div>';
+        });
+        html += '</div>';
+        body.innerHTML = html;
+        window.__gySessions = sessions;
+      })
+      .catch(function(){
+        body.innerHTML = '<div class="chat-hist">' + histBar() + '<div class="chat-hist__empty">Could not load past chats.</div></div>';
+      });
+  };
+
+  function histBar(){
+    return '<div class="chat-hist__bar">' +
+      '<button class="chat-hist__back" onclick="exitChatHistory()">&larr; Back to chat</button>' +
+      '<button class="chat-hist__clear" onclick="clearChatHistory()">Clear my history</button>' +
+    '</div>';
+  }
+
+  window.openChatSession = function(sid){
+    var body = document.getElementById('chatBody');
+    var sessions = window.__gySessions || {};
+    var msgs = (sessions[sid] || []).slice().sort(function(a,b){ return new Date(a.created_at) - new Date(b.created_at); });
+    body.innerHTML = '<div class="chat-hist">' +
+      '<div class="chat-hist__bar"><button class="chat-hist__back" onclick="showChatHistory()">&larr; All chats</button></div></div>';
+    msgs.forEach(function(m){
+      if(m.role === 'user') appendUserMsg(m.content);
+      else appendBotMsg(m.content);
+    });
+  };
+
+  window.exitChatHistory = function(){
+    var body = document.getElementById('chatBody');
+    if(body && _liveBodyHTML !== null){ body.innerHTML = _liveBodyHTML; body.scrollTop = body.scrollHeight; }
+    _liveBodyHTML = null;
+  };
+
+  window.clearChatHistory = function(){
+    if(!confirm('Delete all of your saved chat history on this device? This cannot be undone.')) return;
+    var vid = getVisitorId();
+    fetch(SB_URL + '/rest/v1/chat_messages?visitor_id=eq.' + encodeURIComponent(vid), {
+      method: 'DELETE', headers: sbHeaders()
+    }).then(function(){
+      var body = document.getElementById('chatBody');
+      body.innerHTML = '<div class="chat-hist">' + histBar() + '<div class="chat-hist__empty">Your chat history has been cleared.</div></div>';
+    }).catch(function(){ alert('Could not clear history — please try again.'); });
+  };
 
   /* Opening the chat marks everything as read */
   document.addEventListener('click', function(e){

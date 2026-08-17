@@ -1,0 +1,13 @@
+
+/* Chat history view — swaps into the existing panel body, never resizes it */
+.chat-hist-btn{background:rgba(255,255,255,.14);border:none;width:28px;height:28px;border-radius:8px;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .2s;margin-right:4px}
+.chat-hist-btn:hover{background:rgba(255,255,255,.26)}
+.chat-hist{padding:4px 0}
+.chat-hist__bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.chat-hist__back{background:none;border:none;color:var(--teal);font-weight:600;font-size:.84rem;cursor:pointer;padding:4px 0;display:inline-flex;align-items:center;gap:5px}
+.chat-hist__clear{background:none;border:none;color:#c0392b;font-weight:600;font-size:.78rem;cursor:pointer;padding:4px 0}
+.chat-hist__item{background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:border-color .2s}
+.chat-hist__item:hover{border-color:var(--teal)}
+.chat-hist__date{font-size:.72rem;color:var(--slate-2);font-weight:600;margin-bottom:3px}
+.chat-hist__prev{font-size:.85rem;color:var(--ink);line-height:1.4;overflow-wrap:break-word}
+.chat-hist__empty{text-align:center;padding:28px 12px;color:var(--slate-2);font-size:.86rem}
