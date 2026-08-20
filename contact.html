@@ -185,6 +185,12 @@ function submitContact(e){
       </div>
       <div class="field"><label for="q-for">Who needs care?</label><select id="q-for" name="Care For"><option>My parent</option><option>My spouse / partner</option><option>Myself</option><option>Another family member</option><option>A client I represent</option></select></div>
       <div class="field"><label for="q-when">When is care needed?</label><select id="q-when" name="When Needed"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
+      <div class="field" style="margin-top:4px">
+        <label style="display:flex;align-items:flex-start;gap:9px;font-weight:500;font-size:.86rem;color:var(--slate);cursor:pointer">
+          <input type="checkbox" id="q-optin" style="width:auto;margin:2px 0 0;flex-shrink:0">
+          <span>Yes, send me occasional care tips, articles and updates by email. You can unsubscribe at any time.</span>
+        </label>
+      </div>
       <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
       <input type="hidden" name="subject" value="New Home Care Lead — Golden Years Home Care WA">
       <input type="hidden" name="from_name" value="Golden Years Home Care WA">
@@ -234,6 +240,10 @@ function closeQform(){document.getElementById('qform').classList.remove('open');
 var _hcSb=(typeof supabase!=='undefined')?supabase.createClient('https://styzbftuzuqcnkwvwpgm.supabase.co','sb_publishable_vgZaJznqe7aI_TJ8gV8ynw_UPgSsifR'):null;
 function _hcSaveLead(sourcePage,name,email,phone,details,message){
   if(!_hcSb) return Promise.resolve();
+  var optin=document.getElementById('q-optin');
+  if(optin&&optin.checked&&email){
+    _hcSb.from('subscribers').upsert([{email:email,name:name,interest:'Home Care',source:sourcePage}],{onConflict:'email'}).then(function(){},function(){});
+  }
   return _hcSb.from('homecare_leads').insert([{source_page:sourcePage,name:name,email:email,phone:phone,details:details,message:message||''}]).then(function(){},function(){});
 }
 function submitQuick(e){
