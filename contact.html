@@ -98,7 +98,13 @@
         <input type="hidden" name="replyto" value="">
         <input type="hidden" name="Manage in Admin" value="View & reply from the admin dashboard: https://goldenyearshomecarewa.com/admin">
         <input type="hidden" name="Tip" value="You can view every lead and reply more easily from the admin page.">
-        <button class="btn btn--primary" type="submit" id="csubmit" style="width:100%;justify-content:center">Send My Request</button>
+        <div class="field optin-field">
+  <label class="optin-label">
+    <input type="checkbox" id="cf-optin">
+    <span><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</span>
+  </label>
+</div>
+<button class="btn btn--primary" type="submit" id="csubmit" style="width:100%;justify-content:center">Send My Request</button>
         <p style="font-size:.78rem;color:var(--slate-2);margin:14px 0 0;text-align:center">Your details go only to our care team, never anywhere else.</p>
       </form>
       <div id="cthanks" style="display:none;text-align:center;padding:16px 0">
@@ -126,6 +132,10 @@ function submitContact(e){
   var when=document.getElementById('c-when').value;
   var msg=document.getElementById('c-msg').value.trim();
   var btn=document.getElementById('csubmit'); btn.disabled=true; btn.textContent='Sending…';
+  var _cb=document.getElementById('cf-optin');
+  if(_cb && _cb.checked && email && typeof _hcSb!=='undefined' && _hcSb){
+    _hcSb.from('subscribers').upsert([{email:email,name:name,interest:'Home Care',source:'Contact Page'}],{onConflict:'email'}).then(function(){},function(){});
+  }
   var saveP=(typeof _hcSaveLead==='function')?_hcSaveLead('Contact Page',name,email,phone,{'Care For':careFor,'City or ZIP':city,'When Needed':when},msg):Promise.resolve();
   saveP.then(function(){
     return fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
@@ -524,7 +534,7 @@ document.addEventListener('click', function(e){
           var firstUser = msgs.filter(function(m){ return m.role === 'user'; })[0];
           var preview = firstUser ? firstUser.content : '(no messages)';
           if(preview.length > 90) preview = preview.slice(0,90) + '…';
-          html += '<div class="chat-hist__item" onclick="openChatSession(\'' + sid + '\')">' +
+          html += '<div class="chat-hist__item" data-sid="' + sid + '">' +
                     '<div class="chat-hist__date">' + fmtHistDate(msgs[0].created_at) + '</div>' +
                     '<div class="chat-hist__prev">' + escChat(preview) + '</div>' +
                   '</div>';
@@ -574,6 +584,12 @@ document.addEventListener('click', function(e){
     }).catch(function(){ alert('Could not clear history — please try again.'); });
   };
 
+
+  /* Past-chat items are opened via delegation (robust against quoting) */
+  document.addEventListener('click', function(e){
+    var it = e.target.closest && e.target.closest('.chat-hist__item');
+    if(it && it.getAttribute('data-sid')) window.openChatSession(it.getAttribute('data-sid'));
+  });
   /* Opening the chat marks everything as read */
   document.addEventListener('click', function(e){
     if (e.target.closest('.chat-trigger')) setUnread(0);

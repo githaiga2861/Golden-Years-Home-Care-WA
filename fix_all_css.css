@@ -1,0 +1,15 @@
+
+/* --- Clearer marketing opt-in checkbox --- */
+.optin-field{margin:6px 0 16px}
+.optin-label{display:flex;align-items:flex-start;gap:11px;background:var(--mist-2);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;cursor:pointer;transition:border-color .2s,background .2s}
+.optin-label:hover{border-color:var(--teal-soft);background:#fff}
+.optin-label input[type="checkbox"]{width:19px;height:19px;margin:1px 0 0;flex-shrink:0;accent-color:var(--teal);cursor:pointer}
+.optin-label span{font-size:.87rem;line-height:1.5;color:var(--slate);font-weight:500}
+.optin-label strong{color:var(--ink)}
+
+/* --- Chat panel: don't scroll the page behind it --- */
+.chat-panel__body{overscroll-behavior:contain}
+.chat-panel{overscroll-behavior:contain}
+
+/* --- Past-chat items are clickable --- */
+.chat-hist__item{cursor:pointer}

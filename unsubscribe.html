@@ -550,7 +550,7 @@ document.addEventListener('click', function(e){
           var firstUser = msgs.filter(function(m){ return m.role === 'user'; })[0];
           var preview = firstUser ? firstUser.content : '(no messages)';
           if(preview.length > 90) preview = preview.slice(0,90) + '…';
-          html += '<div class="chat-hist__item" onclick="openChatSession(\'' + sid + '\')">' +
+          html += '<div class="chat-hist__item" data-sid="' + sid + '">' +
                     '<div class="chat-hist__date">' + fmtHistDate(msgs[0].created_at) + '</div>' +
                     '<div class="chat-hist__prev">' + escChat(preview) + '</div>' +
                   '</div>';
@@ -600,6 +600,12 @@ document.addEventListener('click', function(e){
     }).catch(function(){ alert('Could not clear history — please try again.'); });
   };
 
+
+  /* Past-chat items are opened via delegation (robust against quoting) */
+  document.addEventListener('click', function(e){
+    var it = e.target.closest && e.target.closest('.chat-hist__item');
+    if(it && it.getAttribute('data-sid')) window.openChatSession(it.getAttribute('data-sid'));
+  });
   /* Opening the chat marks everything as read */
   document.addEventListener('click', function(e){
     if (e.target.closest('.chat-trigger')) setUnread(0);
