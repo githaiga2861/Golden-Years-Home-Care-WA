@@ -286,6 +286,15 @@ function submitQuick(e){
       if(r.error) throw r.error;
       document.getElementById('reviewForm').style.display='none';
       document.getElementById('rvThanks').style.display='block';
+      var stars='';
+      for(var si=0;si<5;si++){ stars += si<rating ? '\u2605' : '\u2606'; }
+      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({
+        access_key:'40d97e85-7635-4c96-9e51-7624f70df2b0',
+        subject:'New Review Submitted \u2014 Awaiting Approval',
+        from_name:'Golden Years Website',
+        'Reviewer Name':name,'Relationship':rel||'Not specified','Rating':stars+' ('+rating+'/5)','Review':text,
+        'Manage in Admin':'Approve or unpublish this review from your admin dashboard.'
+      })}).catch(function(){});
     }catch(e){ alert('Something went wrong — please try again.'); btn.disabled=false; btn.textContent='Submit My Review'; }
     return false;
   };

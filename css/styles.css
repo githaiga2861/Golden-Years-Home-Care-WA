@@ -846,13 +846,6 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-panel__head{gap:10px}
 .chat-hist-btn{margin-right:2px}
 
-/* --- Clearer marketing opt-in checkbox --- */
-.optin-field{margin:6px 0 16px}
-.optin-label{display:flex;align-items:flex-start;gap:11px;background:var(--mist-2);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;cursor:pointer;transition:border-color .2s,background .2s}
-.optin-label:hover{border-color:var(--teal-soft);background:#fff}
-.optin-label input[type="checkbox"]{width:19px;height:19px;margin:1px 0 0;flex-shrink:0;accent-color:var(--teal);cursor:pointer}
-.optin-label span{font-size:.87rem;line-height:1.5;color:var(--slate);font-weight:500}
-.optin-label strong{color:var(--ink)}
 
 /* --- Chat panel: don't scroll the page behind it --- */
 .chat-panel__body{overscroll-behavior:contain}
@@ -860,3 +853,12 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* --- Past-chat items are clickable --- */
 .chat-hist__item{cursor:pointer}
+
+/* Marketing opt-in: matches .consent's plain layout exactly, same width,
+   just a thin border that goes teal on hover, and a bold lead-in. */
+.optin{display:flex;gap:11px;align-items:flex-start;font-size:.86rem;color:var(--slate);margin-bottom:22px;
+  border:1px solid var(--line);border-radius:10px;padding:11px 13px;transition:border-color .2s;cursor:pointer}
+.optin:hover{border-color:var(--teal-soft)}
+.optin input[type="checkbox"]{margin-top:2px;flex-shrink:0;accent-color:var(--teal)}
+.optin label{font-weight:400;margin:0;cursor:pointer}
+.optin strong{font-weight:700;color:var(--ink)}

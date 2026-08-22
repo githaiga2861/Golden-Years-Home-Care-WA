@@ -1,0 +1,9 @@
+
+/* Marketing opt-in: matches .consent's plain layout exactly, same width,
+   just a thin border that goes teal on hover, and a bold lead-in. */
+.optin{display:flex;gap:11px;align-items:flex-start;font-size:.86rem;color:var(--slate);margin-bottom:22px;
+  border:1px solid var(--line);border-radius:10px;padding:11px 13px;transition:border-color .2s;cursor:pointer}
+.optin:hover{border-color:var(--teal-soft)}
+.optin input[type="checkbox"]{margin-top:2px;flex-shrink:0;accent-color:var(--teal)}
+.optin label{font-weight:400;margin:0;cursor:pointer}
+.optin strong{font-weight:700;color:var(--ink)}
